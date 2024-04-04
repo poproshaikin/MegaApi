@@ -8,19 +8,19 @@ namespace MegaApi.Models;
 
 public class Vendor : IHasImage
 {
-    [Key] public int VendorId { get; set; }
-    public int ImageId { get; set; }
+    [Key]       public    int           VendorId         { get; set; }
+                public    int?          ImageId          { get; set; }
     
-    public string Username { get; set; }
-    public string FullName { get; set; }
-    public string ContactNumber { get; set; }
-    public string ContactEmail { get; set; }
-    public VendorType Type { get; set; }
+                public    string        Username         { get; set; }
+                public    string        FullName         { get; set; }
+                public    string        ContactNumber    { get; set; }
+                public    string        ContactEmail     { get; set; }
+                public    VendorType    Type             { get; set; }
 
-    public string[] Keywords { get; set; }
-    public string Slug { get; private set; }
+                public    string[]      Keywords         { get; set; }
+                public    string        Slug             { get; set; }
 
-    [NotMapped] public Image? Image { get; set; }
+    [NotMapped] public    Image?        Image            { get; set; }
 
     public void SetImage(Image img)
     {
