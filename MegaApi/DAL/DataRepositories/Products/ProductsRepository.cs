@@ -1,6 +1,8 @@
-﻿using MegaApi.DAL.DataContexts;
+﻿using System.Runtime.InteropServices.ComTypes;
 using MegaApi.DAL.DataRepositories.Images;
+using MegaApi.DAL.DataRepositories.Vendors;
 using MegaApi.Models;
+using MegaApi.Models.Enums;
 using MegaApi.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,13 +10,15 @@ namespace MegaApi.DAL.DataRepositories.Products;
 
 public class ProductsRepository : IRepository<Product>
 {
-    private ProductsContext _context { get; init; }
+    private DataContext _context { get; init; }
     private IRepository<Image> _imageRepo { get; init; }
+    private IRepository<Vendor> _vendorRepo { get; init; }
     
-    public ProductsRepository(ProductsContext context, IRepository<Image> imageRepo)
+    public ProductsRepository(DataContext context, IRepository<Image> imageRepo, IRepository<Vendor> vendorRepo)
     {
-        _context = context     ?? throw new ArgumentNullException(nameof(context));
-        _imageRepo = imageRepo ?? throw new ArgumentNullException(nameof(imageRepo));
+        _context    = context    ?? throw new ArgumentNullException(nameof(context));
+        _imageRepo  = imageRepo  ?? throw new ArgumentNullException(nameof(imageRepo));
+        _vendorRepo = vendorRepo ?? throw new ArgumentNullException(nameof(vendorRepo));
     }
     
     
@@ -25,16 +29,14 @@ public class ProductsRepository : IRepository<Product>
     {
         var products = _context.Products.ToList();
             products.InitializeImages(_imageRepo as ImagesRepository);
+            products.InitializeVendors(_vendorRepo as VendorsRepository);
         
         return products;
     }
     
     public Product? GetById(int id)
     {
-        var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
-           (product as IHasImage).InitializeImage(_imageRepo as ImagesRepository);
-           
-        return product;
+        return this.Get().FirstOrDefault(p => p.ProductId == id);
     }
 
     public void Insert(Product entity)
@@ -68,6 +70,11 @@ public class ProductsRepository : IRepository<Product>
 
     public IEnumerable<Product> GetByCategory(int id)
     {
+        if (id == (int)ProductType.All)
+        {
+            return this.Get();
+        }
+        
         return this.Get().Where(p => (int)p.Type == id);
     }
 
