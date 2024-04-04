@@ -1,5 +1,4 @@
 using MegaApi.DAL;
-using MegaApi.DAL.DataContexts;
 using MegaApi.DAL.DataRepositories;
 using MegaApi.DAL.DataRepositories.Images;
 using MegaApi.DAL.DataRepositories.Products;
@@ -12,9 +11,7 @@ const string corsOptions = "basicCors";
 
 // jdbc:postgresql://localhost:5432/megadb?password=15112006&user=postgres  << ----- >> do not remove, use to connect IDE 
 
-builder.Services.AddDbContext<ProductsContext>();
-builder.Services.AddDbContext<ImagesContext>();
-builder.Services.AddDbContext<VendorsContext >();
+builder.Services.AddDbContext<DataContext>();
 
 builder.Services.AddScoped<IRepository<Product>, ProductsRepository>();
 builder.Services.AddScoped<IRepository<Image>,   ImagesRepository>();
