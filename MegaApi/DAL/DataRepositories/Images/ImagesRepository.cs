@@ -1,13 +1,12 @@
-﻿using MegaApi.DAL.DataContexts;
-using MegaApi.Models;
+﻿using MegaApi.Models;
 
 namespace MegaApi.DAL.DataRepositories.Images;
 
 public class ImagesRepository : IRepository<Image>
 {
-    private ImagesContext _context { get; init; }
+    private DataContext _context { get; init; }
 
-    public ImagesRepository(ImagesContext context)
+    public ImagesRepository(DataContext context)
     {
         _context = context;
     }
