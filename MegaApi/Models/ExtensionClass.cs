@@ -1,4 +1,5 @@
 ﻿using MegaApi.DAL.DataRepositories.Images;
+using MegaApi.DAL.DataRepositories.Vendors;
 using MegaApi.Models.Interfaces;
 
 namespace MegaApi.Models;
@@ -10,9 +11,14 @@ public static class ExtensionClass
         foreach (var entity in collection)
         {
             entity.InitializeImage(repo);
+        }
+    }
 
-            // product.SetImage(repo.GetById(product.ImageId)!);
-            // product.Image?.ReadImageData();
+    public static void InitializeVendors(this IEnumerable<Product> products, VendorsRepository repo)
+    {
+        foreach (var product in products)
+        {
+            product.InitializeVendor(repo);
         }
     }
 }
